@@ -7,7 +7,7 @@ import os
 
 # --- Configuration ---
 ACCESS_TOKEN = st.secrets["DBX_ACCESS_TOKEN"]
-IMAGE_FOLDER_PATH = '/Apps/iTECH_CRL_IMAGES'
+IMAGE_FOLDER_PATH = '/Interior'
 SCORED_DATA_FILE = 'ultrasound_scores.csv' # File to save scores in Dropbox
 SCORES = [0, 1] # Assuming a binary scoring system as implied by the form
 
