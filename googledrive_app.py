@@ -11,10 +11,10 @@ st.title("Ultrasound Quality Scoring Tool - Google Drive Version")
 
 @st.cache_resource
 def init_gdrive():
-    gauth = GoogleAuth()
     creds = json.loads(st.secrets["GDRIVE_CREDENTIALS_JSON"])
     with open("temp_credentials.json", "w") as f:
         json.dump(creds, f)
+    gauth = GoogleAuth()
     gauth.LoadClientConfigFile("temp_credentials.json")
     gauth.LocalWebserverAuth()
     gauth.SaveCredentialsFile("mycreds.json")
