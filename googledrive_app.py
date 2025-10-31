@@ -1,6 +1,7 @@
 import streamlit as st
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
+from pydrive2.auth import ServiceAccountCredentials
 import pandas as pd
 import json, io
 from PIL import Image
@@ -11,15 +12,14 @@ st.title("Ultrasound Quality Scoring Tool - Google Drive Version")
 
 @st.cache_resource
 def init_gdrive():
-    creds = json.loads(st.secrets["GDRIVE_CREDENTIALS_JSON"])
-    with open("temp_credentials.json", "w") as f:
-        json.dump(creds, f)
+    creds_dict = json.loads(st.secrets["GDRIVE_CREDENTIALS_JSON"])
     gauth = GoogleAuth()
+    gauth.credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+        creds_dict,
+        scopes=["https://www.googleapis.com/auth/drive"]
+    )
     drive = GoogleDrive(gauth)
-    gauth.LoadClientConfigFile("temp_credentials.json")
-    gauth.LocalWebserverAuth()
-    gauth.SaveCredentialsFile("mycreds.json")
-    return gauth
+    return drive
 
 drive = init_gdrive()
 
