@@ -2,6 +2,8 @@ import streamlit as st
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from pydrive2.auth import ServiceAccountCredentials
+from google.oauth2 import service_account
+from googleapiclient.discovery import build
 import pandas as pd
 import json, io
 from PIL import Image
@@ -11,14 +13,23 @@ st.title("Ultrasound Quality Scoring Tool - Google Drive Version")
 
 @st.cache_resource
 def init_gdrive():
-    creds_dict = json.loads(st.secrets["GDRIVE_CREDENTIALS_JSON"])
-    gauth = GoogleAuth()
-    gauth.credentials = ServiceAccountCredentials.from_json_keyfile_dict(
-        creds_dict,
-        scopes=["https://www.googleapis.com/auth/drive"]
-    )
-    drive = GoogleDrive(gauth)
-    return drive
+    creds_dict = {
+        "type": st.secrets["GDRIVE_TYPE"],
+        "project_id": st.secrets["GDRIVE_PROJECT_ID"],
+        "private_key_id": st.secrets["GDRIVE_PRIVATE_KEY_ID"],
+        "private_key": st.secrets["GDRIVE_PRIVATE_KEY"],
+        "client_email": st.secrets["GDRIVE_CLIENT_EMAIL"],
+        "client_id": st.secrets["GDRIVE_CLIENT_ID"],
+        "auth_uri": st.secrets["GDRIVE_AUTH_URI"],
+        "token_uri": st.secrets["GDRIVE_TOKEN_URI"],
+        "auth_provider_x509_cert_url": st.secrets["GDRIVE_AUTH_PROVIDER_X509_CERT_URL"],
+        "client_x509_cert_url": st.secrets["GDRIVE_CLIENT_X509_CERT_URL"],
+        "universe_domain": st.secrets["GDRIVE_UNIVERSE_DOMAIN"],
+    }
+
+    creds = service_account.Credentials.from_service_account_info(creds_dict)
+    drive_service = build("drive", "v3", credentials=creds)
+    return drive_service
 
 drive = init_gdrive()
 
