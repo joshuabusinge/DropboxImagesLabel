@@ -6,7 +6,6 @@ import pandas as pd
 import json, io
 from PIL import Image
 import os
-
 # --- Google Drive Setup ---
 st.title("Ultrasound Quality Scoring Tool - Google Drive Version")
 
