@@ -15,6 +15,7 @@ def init_gdrive():
     with open("temp_credentials.json", "w") as f:
         json.dump(creds, f)
     gauth = GoogleAuth()
+    drive = GoogleDrive(gauth)
     gauth.LoadClientConfigFile("temp_credentials.json")
     gauth.LocalWebserverAuth()
     gauth.SaveCredentialsFile("mycreds.json")
