@@ -41,7 +41,7 @@ SCORES = [0, 1]
 # --- Load images from Google Drive ---
 @st.cache_resource
 def load_images_from_gdrive():
-    file_list = drive.ListFile({'q': f"'{IMAGE_FOLDER_ID}' in parents and trashed=false"}).GetList()
+    file_list = drive.ListFile({'q': f"'{IMAGE_FOLDER_ID}' in parents and title='{SCORED_FILE_NAME}' and trashed=false"}).GetList()
     images = [f for f in file_list if f['title'].lower().endswith(('.jpg', '.jpeg', '.png'))]
     return images
 
